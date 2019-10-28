@@ -1,9 +1,9 @@
 package com.leetcode.algorithms;
 
 
+import jdk.internal.util.xml.impl.Input;
+
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * @Program: leetCode
@@ -44,14 +44,39 @@ public class solve002 {
         *   时间复杂度：
         *   空间复杂度：
         * */
-        return null;
+        return new ListNode(l1.val + l2.val);
     }
     
-    public static void main(String[] args) {
-        // ListNode resultListNode = addTwoNumbers(new ListNode(1), new ListNode(2));
-        // int resultVal = resultListNode.val;
-        int resultVal = 123;
-        String resultString = String.valueOf(resultVal);
+    private static String process(String input) {
+        int index = input.indexOf("+");
+        String prefix = input.substring(0, index);
+        String suffix = input.substring(index);
+        StringBuffer prefixFinnalString = new StringBuffer();
+        StringBuffer suffixFinnalString = new StringBuffer();
+        for (int i = 0; i < prefix.length(); i++) {
+            String ch = String.valueOf(prefix.charAt(i));
+            if (ch.matches("^[0-9]*$")) {
+                prefixFinnalString.append(ch);
+            }
+        }
+        for (int i = 0; i < suffix.length(); i++) {
+            String ch = String.valueOf(suffix.charAt(i));
+            if (ch.matches("^[0-9]*$")) {
+                suffixFinnalString.append(ch);
+            }
+        }
+        Integer prefixFinnal = Integer.valueOf(prefixFinnalString.toString());
+        Integer suffixFinnal = Integer.valueOf(suffixFinnalString.toString());
+        ListNode resultListNode = addTwoNumbers(new ListNode(prefixFinnal), new ListNode(suffixFinnal));
+        int resultVal = resultListNode.val;
+        String resultValStr = String.valueOf(resultVal);
+        int length = resultValStr.length();
+        StringBuffer resultStringBuf = new StringBuffer();
+        for (int i = length - 1; i >= 0; i--) {
+            String s = String.valueOf(resultValStr.charAt(i));
+            resultStringBuf.append(s);
+        }
+        String resultString = String.valueOf(resultStringBuf);
         ArrayList resultList = new ArrayList<>();
         for (int i = 0; i < resultString.length(); i++) {
             resultList.add(resultString.charAt(i));
@@ -65,10 +90,18 @@ public class solve002 {
             }
             if (i == resultStringLength) {
                 soutString.append(" -> " + resultList.get(i) + ")");
-                System.out.println(soutString);
-                return;
+                return soutString.toString();
             }
             soutString.append(" -> " + resultList.get(i));
         }
+        return soutString.toString();
     }
+    
+    public static void main(String[] args) {
+        String input = "(2 -> 4 -> 3) + (5 -> 6 -> 4)";
+        String process = process(input);
+        System.out.println(process);
+    }
+    
+    
 }
