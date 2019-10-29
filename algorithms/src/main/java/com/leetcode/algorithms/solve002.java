@@ -1,9 +1,8 @@
 package com.leetcode.algorithms;
 
-
-import jdk.internal.util.xml.impl.Input;
-
-import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 /**
  * @Program: leetCode
@@ -44,64 +43,66 @@ public class solve002 {
         *   时间复杂度：
         *   空间复杂度：
         * */
-        return new ListNode(l1.val + l2.val);
-    }
-    
-    private static String process(String input) {
-        int index = input.indexOf("+");
-        String prefix = input.substring(0, index);
-        String suffix = input.substring(index);
-        StringBuffer prefixFinnalString = new StringBuffer();
-        StringBuffer suffixFinnalString = new StringBuffer();
-        for (int i = 0; i < prefix.length(); i++) {
-            String ch = String.valueOf(prefix.charAt(i));
-            if (ch.matches("^[0-9]*$")) {
-                prefixFinnalString.append(ch);
-            }
-        }
-        for (int i = 0; i < suffix.length(); i++) {
-            String ch = String.valueOf(suffix.charAt(i));
-            if (ch.matches("^[0-9]*$")) {
-                suffixFinnalString.append(ch);
-            }
-        }
-        Integer prefixFinnal = Integer.valueOf(prefixFinnalString.toString());
-        Integer suffixFinnal = Integer.valueOf(suffixFinnalString.toString());
-        ListNode resultListNode = addTwoNumbers(new ListNode(prefixFinnal), new ListNode(suffixFinnal));
-        int resultVal = resultListNode.val;
-        String resultValStr = String.valueOf(resultVal);
-        int length = resultValStr.length();
-        StringBuffer resultStringBuf = new StringBuffer();
-        for (int i = length - 1; i >= 0; i--) {
-            String s = String.valueOf(resultValStr.charAt(i));
-            resultStringBuf.append(s);
-        }
-        String resultString = String.valueOf(resultStringBuf);
-        ArrayList resultList = new ArrayList<>();
-        for (int i = 0; i < resultString.length(); i++) {
-            resultList.add(resultString.charAt(i));
-        }
-        StringBuffer soutString = new StringBuffer();
-        int resultStringLength = resultList.size() - 1;
-        for (int i = 0; i <= resultStringLength; i++) {
-            if (i == 0) {
-                soutString.append("(" + resultList.get(i));
-                continue;
-            }
-            if (i == resultStringLength) {
-                soutString.append(" -> " + resultList.get(i) + ")");
-                return soutString.toString();
-            }
-            soutString.append(" -> " + resultList.get(i));
-        }
-        return soutString.toString();
-    }
-    
-    public static void main(String[] args) {
-        String input = "(2 -> 4 -> 3) + (5 -> 6 -> 4)";
-        String process = process(input);
-        System.out.println(process);
+        return null;
     }
     
     
+    public static int[] stringToIntegerArray(String input) {
+        input = input.trim();
+        input = input.substring(1, input.length() - 1);
+        if (input.length() == 0) {
+            return new int[0];
+        }
+        
+        String[] parts = input.split(",");
+        int[] output = new int[parts.length];
+        for(int index = 0; index < parts.length; index++) {
+            String part = parts[index].trim();
+            output[index] = Integer.parseInt(part);
+        }
+        return output;
+    }
+    
+    public static ListNode stringToListNode(String input) {
+        // Generate array from the input
+        int[] nodeValues = stringToIntegerArray(input);
+        
+        // Now convert that list into linked list
+        ListNode dummyRoot = new ListNode(0);
+        ListNode ptr = dummyRoot;
+        for(int item : nodeValues) {
+            ptr.next = new ListNode(item);
+            ptr = ptr.next;
+        }
+        return dummyRoot.next;
+    }
+    
+    public static String listNodeToString(ListNode node) {
+        if (node == null) {
+            return "[]";
+        }
+        
+        String result = "";
+        while (node != null) {
+            result += Integer.toString(node.val) + ", ";
+            node = node.next;
+        }
+        return "[" + result.substring(0, result.length() - 2) + "]";
+    }
+    
+    public static void main(String[] args) throws IOException {
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        String line;
+        while ((line = in.readLine()) != null) {
+            ListNode l1 = stringToListNode(line);
+            line = in.readLine();
+            ListNode l2 = stringToListNode(line);
+            
+            ListNode ret = new solve002().addTwoNumbers(l1, l2);
+            
+            String out = listNodeToString(ret);
+            
+            System.out.print(out);
+        }
+    }
 }
