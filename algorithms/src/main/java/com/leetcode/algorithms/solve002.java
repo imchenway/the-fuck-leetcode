@@ -36,9 +36,7 @@ public class solve002 {
     private static ListNode addTwoNumbers(ListNode l1, ListNode l2) {
         /*
         * 解：
-        *   1、两int相加
-        *   2、从最后一位存入listNode
-        *   3、遍历输出
+        *   1、
         * 复杂度：
         *   时间复杂度：O(max(m,n))
         *   空间复杂度：O(max(m,n))
