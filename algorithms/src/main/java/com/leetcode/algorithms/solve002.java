@@ -34,28 +34,25 @@ public class solve002 {
     }
     
     private static ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-        /*
-        * 解：
-        *   1、
-        * 复杂度：
-        *   时间复杂度：O(max(m,n))
-        *   空间复杂度：O(max(m,n))
-        * */
         ListNode dummyHead = new ListNode(0);
-        ListNode p = l1, q = l2, curr = dummyHead;
+        ListNode result = dummyHead;
         int carry = 0;
-        while (p != null || q != null) {
-            int x = (p != null) ? p.val : 0;
-            int y = (q != null) ? q.val : 0;
-            int sum = carry + x + y;
+        while (l1 != null || l2 != null) {
+            int l1Val = (l1 != null) ? l1.val : 0;
+            int l2Val = (l2 != null) ? l2.val : 0;
+            int sum = l1Val + l2Val + carry;
             carry = sum / 10;
-            curr.next = new ListNode(sum % 10);
-            curr = curr.next;
-            if (p != null) p = p.next;
-            if (q != null) q = q.next;
+            result.next = new ListNode(sum % 10);
+            result = result.next;
+            if (l1 != null) {
+                l1 = l1.next != null ? l1.next : null;
+            }
+            if (l2 != null) {
+                l2 = l2.next != null ? l2.next : null;
+            }
         }
         if (carry > 0) {
-            curr.next = new ListNode(carry);
+            result.next = new ListNode(carry);
         }
         return dummyHead.next;
     }
@@ -103,7 +100,8 @@ public class solve002 {
         }
         return "[" + result.substring(0, result.length() - 2) + "]";
     }
-    
+    // [2,4,3]
+    // [5,6,4]
     public static void main(String[] args) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         String line;
